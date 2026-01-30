@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>930</width>
-    <height>590</height>
+    <height>650</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
     <width>930</width>
-    <height>590</height>
+    <height>650</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,7 @@
     <property name="currentIndex">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="monitoring_tab">
      <attribute name="title">
       <string>Monitoring</string>
      </attribute>
@@ -623,7 +623,7 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="widget">
+    <widget class="QWidget" name="control_tab">
      <attribute name="title">
       <string>Control</string>
      </attribute>
@@ -779,7 +779,7 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_2">
+    <widget class="QWidget" name="setting_tab">
      <attribute name="title">
       <string>Setting</string>
      </attribute>
@@ -1156,39 +1156,7 @@
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QPushButton" name="applyBtn">
-       <property name="geometry">
-        <rect>
-         <x>790</x>
-         <y>30</y>
-         <width>121</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Apply</string>
-       </property>
-       <property name="icon">
-        <iconset theme="media-playlist-repeat"/>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="savechangeBtn">
-       <property name="geometry">
-        <rect>
-         <x>630</x>
-         <y>30</y>
-         <width>121</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Save Changed</string>
-       </property>
-       <property name="icon">
-        <iconset theme="document-save"/>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="savechangeBtn_2">
+      <widget class="QPushButton" name="saveBtn">
        <property name="geometry">
         <rect>
          <x>620</x>
@@ -1204,7 +1172,7 @@
         <iconset theme="document-save"/>
        </property>
       </widget>
-      <widget class="QPushButton" name="applyBtn_2">
+      <widget class="QPushButton" name="applyBtn">
        <property name="geometry">
         <rect>
          <x>780</x>
@@ -1268,9 +1236,9 @@
     <widget class="QPushButton" name="endBtn">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>180</x>
        <y>60</y>
-       <width>81</width>
+       <width>61</width>
        <height>41</height>
       </rect>
      </property>
@@ -1284,9 +1252,9 @@
     <widget class="QPushButton" name="infoBtn">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>180</x>
        <y>10</y>
-       <width>81</width>
+       <width>61</width>
        <height>41</height>
       </rect>
      </property>
@@ -1302,7 +1270,7 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>141</width>
+       <width>161</width>
        <height>41</height>
       </rect>
      </property>
@@ -1310,7 +1278,7 @@
       <string>Change User</string>
      </property>
      <property name="icon">
-      <iconset theme="dialog-password"/>
+      <iconset theme="user-available"/>
      </property>
     </widget>
     <widget class="QPushButton" name="accountManagementBtn">
@@ -1318,7 +1286,7 @@
       <rect>
        <x>10</x>
        <y>60</y>
-       <width>141</width>
+       <width>161</width>
        <height>41</height>
       </rect>
      </property>
@@ -1326,9 +1294,47 @@
       <string>Account Management</string>
      </property>
      <property name="icon">
-      <iconset theme="x-office-address-book"/>
+      <iconset theme="emblem-shared"/>
      </property>
     </widget>
+   </widget>
+   <widget class="QLabel" name="label_16">
+    <property name="geometry">
+     <rect>
+      <x>850</x>
+      <y>570</y>
+      <width>41</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>ui/images/logo.jpg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_19">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>575</y>
+      <width>821</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>ui/images/line.jpg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

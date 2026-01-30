@@ -1,5 +1,5 @@
 # app.py
-from ui.general_ui import run
-
+from ui.general_ui import GeneralUI
+gui = GeneralUI()
 if __name__ == "__main__":
-    run()
+    gui.run()

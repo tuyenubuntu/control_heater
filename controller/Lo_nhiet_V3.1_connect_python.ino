@@ -27,6 +27,32 @@ unsigned long lastTempRead = 0;
 const int LCD_INTERVAL = 300;   
 const int TEMP_INTERVAL = 200; // Đọc nhanh để lấy mẫu cho bộ lọc
 
+// ================= SERIAL PROTOCOL (Python <-> Arduino) =================
+// Lưu ý: KHÔNG thay đổi logic cũ. Phần này chỉ "bổ sung" để PC/Python có thể:
+// - gửi lệnh set SP/PID/MODE/START/STOP/MAN
+// - nhận telemetry dạng key=value theo chu kỳ
+const unsigned long TELEMETRY_INTERVAL = 250; // ms
+unsigned long lastTelemetrySend = 0;
+
+// Remote control flags (mặc định giữ nguyên hành vi cũ)
+bool remote_stop = false;        // STOP từ PC -> tắt output (an toàn)
+bool remote_manual = false;      // MODE=MANUAL -> dùng output manual từ PC
+int manual_heater_pct = 0;       // 0..100
+int manual_fan_pct = 0;          // 0..100
+
+// Sensor health (để báo ALARM=SENSOR khi thermocouple lỗi)
+bool sensor_ok = true;
+
+// Buffer nhận lệnh Serial (non-blocking)
+const int SERIAL_BUF_LEN = 80;
+char serial_buf[SERIAL_BUF_LEN];
+uint8_t serial_buf_pos = 0;
+
+// Prototype bổ sung
+void handleSerial();
+void processCommand(char* line);
+void sendTelemetryLine();
+
 // PID Var
 float set_temperature = 37.0; 
 float temperature_read = 0.0; // Biến này sẽ lưu giá trị ĐÃ ĐƯỢC LÀM MỊN
@@ -117,6 +143,8 @@ void setup() {
 void loop() {
   currentMillis = millis(); 
 
+  handleSerial();
+
   handleEncoderUpdate();
   handleButtonPress();
 
@@ -132,6 +160,7 @@ void loop() {
     float raw_temp = readThermocouple(); // Đọc giá trị thô
     
     if (!isnan(raw_temp)) {
+      sensor_ok = true;
       // BỘ LỌC THÔNG THẤP (Low Pass Filter)
       // Giúp đường đồ thị mượt mà hơn, loại bỏ gai nhiễu
       if (temperature_read == 0) {
@@ -139,6 +168,8 @@ void loop() {
       } else {
         temperature_read = (temperature_read * 0.70) + (raw_temp * 0.30);
       }
+    } else {
+      sensor_ok = false;
     }
   }
 
@@ -151,6 +182,12 @@ void loop() {
     digitalWrite(BUZZER_PIN, LOW);
   }
 
+  // Telemetry cho Python/GUI
+  if (currentMillis - lastTelemetrySend >= TELEMETRY_INTERVAL) {
+    lastTelemetrySend = currentMillis;
+    sendTelemetryLine();
+  }
+
   // Hiển thị
   if (currentMillis - lastLCDUpdate >= LCD_INTERVAL) {
     lastLCDUpdate = currentMillis;
@@ -160,6 +197,21 @@ void loop() {
 
 // ================= LOGIC ĐIỀU KHIỂN =================
 void runControlLogic() {
+
+  // 0. REMOTE STOP (từ PC) - ưu tiên an toàn, không ảnh hưởng logic khi không dùng
+  if (remote_stop) {
+      analogWrite(HEATER_PIN, 255);  // heater OFF (active LOW)
+      analogWrite(FAN_PIN, 0);       // fan OFF
+      digitalWrite(BUZZER_PIN, LOW);
+      PID_i = 0;
+
+      // Giữ output Plotter như cũ (Power=0)
+      Serial.print("SetPoint:"); Serial.print(set_temperature);
+      Serial.print(",ProcessValue:"); Serial.print(temperature_read);
+      Serial.println(",Power:0");
+      return;
+  }
+
   
   // 1. KIỂM TRA AN TOÀN (EMERGENCY)
   if (temperature_read >= ABSOLUTE_MAX_TEMP || temperature_read >= (set_temperature + OVERHEAT_MARGIN)) {
@@ -208,6 +260,26 @@ void runControlLogic() {
     Serial.print("SetPoint:"); Serial.print(set_temperature);
     Serial.print(",ProcessValue:"); Serial.print(temperature_read);
     Serial.println(",Power:0");
+    return;
+  }
+
+
+  // 3.5. REMOTE MANUAL OUTPUT (từ PC) - chỉ khi MODE=MANUAL
+  // Vẫn giữ các lớp bảo vệ (emergency/timer_done đã return ở trên)
+  if (remote_manual) {
+    digitalWrite(BUZZER_PIN, LOW);
+
+    int heater_pwm = map(manual_heater_pct, 0, 100, 0, 255);
+    int fan_pwm    = map(manual_fan_pct,    0, 100, 0, FAN_MAX_PWM);
+
+    analogWrite(HEATER_PIN, 255 - heater_pwm); // active LOW
+    analogWrite(FAN_PIN, fan_pwm);
+
+    // Plotter output (giữ format cũ)
+    Serial.print("SetPoint:"); Serial.print(set_temperature);
+    Serial.print(",ProcessValue:"); Serial.print(temperature_read);
+    Serial.print(",Power:"); Serial.println(heater_pwm);
+
     return;
   }
 
@@ -496,4 +568,228 @@ double readThermocouple() {
   if (v & 0x4) return NAN;
   v >>= 3;
   return v * 0.25;
+}
+
+// ================= SERIAL HANDLER & TELEMETRY =================
+void handleSerial() {
+  while (Serial.available() > 0) {
+    char c = (char)Serial.read();
+
+    // bỏ CR
+    if (c == '\r') continue;
+
+    if (c == '\n') {
+      if (serial_buf_pos == 0) continue;
+      serial_buf[serial_buf_pos] = '\0';
+      processCommand(serial_buf);
+      serial_buf_pos = 0;
+      continue;
+    }
+
+    // chống tràn buffer
+    if (serial_buf_pos < SERIAL_BUF_LEN - 1) {
+      serial_buf[serial_buf_pos++] = c;
+    } else {
+      // nếu quá dài -> reset buffer
+      serial_buf_pos = 0;
+    }
+  }
+}
+
+static float _toFloatOrNaN(const char* s) {
+  if (!s) return NAN;
+  return atof(s);
+}
+
+static int _toIntClamp(const char* s, int lo, int hi) {
+  if (!s) return lo;
+  int v = atoi(s);
+  if (v < lo) v = lo;
+  if (v > hi) v = hi;
+  return v;
+}
+
+// Parse command theo protocol trong Python:
+//   SP=45.0
+//   PID,KP=90,KI=30,KD=80
+//   MODE=AUTO / MODE=MANUAL
+//   START / STOP
+//   MAN,H=50,F=20
+void processCommand(char* line) {
+  // trim whitespace
+  while (*line == ' ' || *line == '\t') line++;
+  if (*line == '\0') return;
+
+  // Uppercase copy cho phần keyword
+  // (vẫn giữ line gốc để parse giá trị số)
+  String s = String(line);
+  s.trim();
+
+  // ===== START/STOP =====
+  if (s.equalsIgnoreCase("START")) {
+    remote_stop = false;
+    return;
+  }
+  if (s.equalsIgnoreCase("STOP")) {
+    remote_stop = true;
+    return;
+  }
+
+  // ===== SP= =====
+  if (s.startsWith("SP=") || s.startsWith("sp=")) {
+    int eq = s.indexOf('=');
+    float sp = s.substring(eq + 1).toFloat();
+    if (sp < 0) sp = 0;
+    if (sp > ABSOLUTE_MAX_TEMP) sp = ABSOLUTE_MAX_TEMP;
+    set_temperature = sp;
+    return;
+  }
+
+  // ===== MODE= =====
+  if (s.startsWith("MODE=") || s.startsWith("mode=")) {
+    int eq = s.indexOf('=');
+    String mv = s.substring(eq + 1);
+    mv.trim();
+    mv.toUpperCase();
+
+    if (mv == "MANUAL") remote_manual = true;
+    else if (mv == "AUTO") remote_manual = false;
+
+    // Bonus: cho phép set mode cũ STD/DUAL qua Serial
+    if (mv == "STD") control_mode = 0;
+    else if (mv == "DUAL") control_mode = 1;
+
+    return;
+  }
+
+  // ===== PID, KP/KI/KD =====
+  if (s.startsWith("PID") || s.startsWith("pid")) {
+    // Tách theo dấu phẩy
+    // Ví dụ: PID,KP=90.000,KI=30.000,KD=80.000
+    int p1 = 0;
+    while (true) {
+      int comma = s.indexOf(',', p1);
+      String token = (comma == -1) ? s.substring(p1) : s.substring(p1, comma);
+      token.trim();
+
+      int eq = token.indexOf('=');
+      if (eq > 0) {
+        String k = token.substring(0, eq);
+        String v = token.substring(eq + 1);
+        k.trim(); k.toUpperCase();
+        v.trim();
+
+        if (k == "KP") kp = (int)round(v.toFloat());
+        else if (k == "KI") ki = (int)round(v.toFloat());
+        else if (k == "KD") kd = (int)round(v.toFloat());
+      }
+
+      if (comma == -1) break;
+      p1 = comma + 1;
+    }
+    return;
+  }
+
+  // ===== MAN,H=xx,F=yy =====
+  if (s.startsWith("MAN") || s.startsWith("man")) {
+    int p1 = 0;
+    while (true) {
+      int comma = s.indexOf(',', p1);
+      String token = (comma == -1) ? s.substring(p1) : s.substring(p1, comma);
+      token.trim();
+
+      int eq = token.indexOf('=');
+      if (eq > 0) {
+        String k = token.substring(0, eq);
+        String v = token.substring(eq + 1);
+        k.trim(); k.toUpperCase();
+        v.trim();
+
+        if (k == "H") manual_heater_pct = constrain((int)round(v.toFloat()), 0, 100);
+        else if (k == "F") manual_fan_pct = constrain((int)round(v.toFloat()), 0, 100);
+      }
+
+      if (comma == -1) break;
+      p1 = comma + 1;
+    }
+    return;
+  }
+
+  // (Optional) REQ -> gửi telemetry ngay
+  if (s.equalsIgnoreCase("REQ")) {
+    sendTelemetryLine();
+    return;
+  }
+}
+
+void sendTelemetryLine() {
+  // Tính % heater/fan đang điều khiển (ước lượng theo logic hiện tại)
+  int heater_pct = 0;
+  int fan_pct = 0;
+
+  if (menu_activated != 1) {
+    heater_pct = 0;
+    fan_pct = 0;
+  } else if (is_emergency) {
+    heater_pct = 0;
+    fan_pct = 100;
+  } else if (timer_finished) {
+    heater_pct = 0;
+    fan_pct = 100;
+  } else if (remote_stop) {
+    heater_pct = 0;
+    fan_pct = 0;
+  } else if (remote_manual) {
+    heater_pct = manual_heater_pct;
+    fan_pct = manual_fan_pct;
+  } else {
+    // AUTO: dựa trên PID_out + control_mode
+    if (control_mode == 0) { // STD
+      if (is_cooling_state) {
+        heater_pct = 0;
+        fan_pct = 100;
+      } else {
+        heater_pct = (int)round((abs(PID_out) / 255.0) * 100.0);
+        fan_pct = 0;
+      }
+    } else { // DUAL
+      if (PID_out > 0) {
+        heater_pct = (int)round((abs(PID_out) / 255.0) * 100.0);
+        fan_pct = 0;
+      } else if (PID_out < 0) {
+        heater_pct = 0;
+        fan_pct = (int)round((abs(PID_out) / 255.0) * 100.0);
+
+        // fan min 50 PWM trong code -> phản ánh tối thiểu ~ (50/FAN_MAX_PWM)
+        if (fan_pct > 0) {
+          int minPct = (int)round((50.0 / FAN_MAX_PWM) * 100.0);
+          if (fan_pct < minPct) fan_pct = minPct;
+        }
+      } else {
+        heater_pct = 0;
+        fan_pct = 0;
+      }
+    }
+  }
+
+  float pv = temperature_read;
+  float sp = set_temperature;
+  float err = sp - pv;
+
+  String mode = remote_manual ? "MANUAL" : "AUTO";
+
+  String alarm = "NONE";
+  if (!sensor_ok) alarm = "SENSOR";
+  if (remote_stop) alarm = "STOP";
+  if (timer_finished) alarm = "TIMER_DONE";
+  if (is_emergency) alarm = "OVERTEMP"; // ưu tiên cao nhất
+
+  // Format đúng Python parser: PV=..,SP=..,ERR=..,H=..,F=..,MODE=..,ALARM=..
+  Serial.print("PV=");   Serial.print(pv, 2);
+  Serial.print(",SP=");  Serial.print(sp, 2);
+  Serial.print(",ERR="); Serial.print(err, 2);
+  Serial.print(",H=");   Serial.print(heater_pct);
+  Serial.print(",F=");   Serial.print(fan_pct);
+  Serial.print(",MODE="); Serial.print(mode);
+  Serial.print(",ALARM="); Serial.println(alarm);
 }

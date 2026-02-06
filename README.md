@@ -187,10 +187,6 @@ Below are screenshots and UI samples from the `ui/images` folder to help visuali
 
     ![Demo 3](ui/images/demo_%203.png)
 
-- App logo
-
-    ![Logo](ui/images/logo.jpg)
-
 - Example line chart
 
     ![Line chart sample](ui/images/line.jpg)
@@ -198,4 +194,5 @@ Below are screenshots and UI samples from the `ui/images` folder to help visuali
     ------------------------------------------------------------------------
 
     Copyright: © 2026 tuyenubuntu
+
 

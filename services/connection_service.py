@@ -37,23 +37,60 @@ class ConnectionService:
     # -----------------------------
     # CONNECTION
     # -----------------------------
-    def connect(self, port: str, baudrate: int = 115200):
+    def connect(self, port: str, baudrate: int = 115200, timeout: int = 2):
         if self.is_connected:
             return True
 
+        # Kiểm tra port có tồn tại không
+        available_ports = self.list_ports()
+        if port not in available_ports:
+            print(f"[ConnectionService] ✗ Port {port} không tồn tại. Available: {available_ports}")
+            return False
+
         try:
+            # Giảm timeout khi mở serial port
             self.ser = serial.Serial(
                 port=port,
                 baudrate=baudrate,
-                timeout=1
+                timeout=0.5,
+                write_timeout=1
             )
             self.port = port
             self.baudrate = baudrate
+            
+            # Chờ Arduino reset (khi mở COM, Arduino UNO sẽ reset)
+            time.sleep(2)
+            
+            # Xóa buffer cũ
+            self.ser.reset_input_buffer()
+            self.ser.reset_output_buffer()
+            
+            # Gửi lệnh REQ để kiểm tra
+            self.ser.write(b"REQ\n")
+            
+            # Chờ response với timeout
+            start_time = time.time()
+            response_received = False
+            
+            while time.time() - start_time < timeout:
+                if self.ser.in_waiting > 0:
+                    line = self.ser.readline().decode(errors="ignore").strip()
+                    # Kiểm tra xem có phải telemetry response không (chứa "PV=" và "SP=")
+                    if "PV=" in line and "SP=" in line:
+                        response_received = True
+                        print(f"[ConnectionService] ✓ Handshake OK: {line}")
+                        break
+                time.sleep(0.05)
+            
+            if not response_received:
+                self.ser.close()
+                self.is_connected = False
+                print(f"[ConnectionService] ✗ No response from Arduino on {port}")
+                return False
+            
             self.is_connected = True
-
             self._start_reading()
             print(f"[ConnectionService] Connected to {port}")
-
             return True
 
         except Exception as e:

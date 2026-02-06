@@ -3,3 +3,7 @@ pymongo
 flask
 flask_socketio
 matplotlib
+numpy
+pandas
+scipy
+pyserial

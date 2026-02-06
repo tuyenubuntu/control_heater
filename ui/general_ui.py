@@ -57,7 +57,7 @@ class GeneralUI:
         self.account_manager = AccountManagerUI(parent_window=self.window, loader=self.loader, security_service=self.security, generalUI=self)
 
         # Child UIs (inspection is initialized at start; others are lazy)
-        self._monitor_ui = MonitoringUI(self.window)
+        self._monitor_ui = MonitoringUI(self.window, self)
         self._control_ui: Optional[ControlUI] = None
         self._setting_ui: Optional[SettingUI] = None
         self._inited: Set[int] = set()

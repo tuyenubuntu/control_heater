@@ -3,6 +3,8 @@ from PySide6.QtGui import QPixmap, QImage, QColor
 from PySide6.QtWidgets import QComboBox, QTextEdit, QPushButton, QLabel, QTableWidget, QTableWidgetItem, QApplication, QWidget
 import time
 import threading
+from entities.log_ui_entity import LogUIEntity
+from infrastructure.log_ui_type import LogUIType
 from services.connection_service import ConnectionService
 from services.arduino_io_service import ArduinoIOService
 from ui.histogram import HistogramUI
@@ -12,14 +14,14 @@ class MonitoringUI:
     def __init__(self, window: QWidget, generalUI):
         self.window = window
         self.generalUI = generalUI
-        self.connection_service = ConnectionService()
-        self.arduino_io_service = ArduinoIOService(self.connection_service)
+        # self.connection_service = ConnectionService()
+        # self.arduino_io_service = ArduinoIOService(self.connection_service)
 
         self.state_connected = None
         self.pv_prev = None  # For trend calculation
 
         # Available ports/baudrates
-        self.ports = self.arduino_io_service.list_ports()
+        self.ports = self.generalUI.arduino_io_service.list_ports()
         self.baudrates = [9600, 19200, 38400, 57600, 115200]
         self._bind_widgets()
         # populate UI widgets
@@ -38,14 +40,14 @@ class MonitoringUI:
         self.histogram = HistogramUI(parent_widget=self.histogram_1, max_samples=500)
         
         # Setup telemetry callback
-        self.arduino_io_service.on_telemetry = self.on_telemetry_received
+        self.generalUI.arduino_io_service.on_telemetry = self.on_telemetry_received
 
     def __del__(self):
         """Cleanup khi UI bị xóa"""
         try:
             if self.state_connected:
-                self.arduino_io_service.disconnect()
-            self.arduino_io_service.on_telemetry = None  # Xóa callback
+                self.generalUI.arduino_io_service.disconnect()
+            self.generalUI.arduino_io_service.on_telemetry = None  # Xóa callback
         except Exception:
             pass
 
@@ -66,8 +68,7 @@ class MonitoringUI:
         self.connect_button = self.window.findChild(QPushButton, "connectBtn")
         self.refresh_button = self.window.findChild(QPushButton, "refreshBtn")
         self.histogram_1 = self.window.findChild(QWidget, "histogram_1")
-        self.info = self.window.findChild(QTextEdit, "info_edit")
-
+        
         self.start_button.clicked.connect(self.start)
         self.stop_button.clicked.connect(self.stop)
         if self.refresh_button:
@@ -76,20 +77,27 @@ class MonitoringUI:
             self.connect_button.clicked.connect(self.handle_connect)
     
     def start(self):
-        self.arduino_io_service.start()
+        if not self.state_connected:
+            # self.info.append("[Start] Vui lòng kết nối đến Arduino trước.")
+            self.generalUI.gui_log_update(LogUIEntity(LogUIType.WARNING, "[Start] Vui lòng kết nối đến Arduino trước.", ""))
+            return
+        self.generalUI.arduino_io_service.start()
         self.start_button.setEnabled(False)
         self.stop_button.setEnabled(True)
     
     def stop(self):
-        self.arduino_io_service.stop()
+        if not self.state_connected:
+            self.generalUI.gui_log_update(LogUIEntity(LogUIType.WARNING, "[Start] Vui lòng kết nối đến Arduino trước.", ""))
+            return
+        self.generalUI.arduino_io_service.stop()
         self.start_button.setEnabled(True)
         self.stop_button.setEnabled(False)
 
     def refresh(self):
-        self.ports = self.arduino_io_service.list_ports()
+        self.ports = self.generalUI.arduino_io_service.list_ports()
         self.update_com_ports()
         self.update_baudrates()
-        self.info.append("[Refresh] Đã làm mới danh sách cổng COM.")
+        self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, "[Refresh] Đã làm mới danh sách cổng COM.", ""))
 
     def on_telemetry_received(self, telemetry):
         """Callback từ arduino_io_service khi nhận data từ Arduino"""
@@ -166,12 +174,12 @@ class MonitoringUI:
         if self.connection_service and self.state_connected:
             # currently connected -> disconnect
             try:
-                self.arduino_io_service.disconnect()
+                self.generalUI.arduino_io_service.disconnect()
                 self.state_connected = False
             except Exception:
                 pass
             self._set_connected_state(False)
-            self.info.append("[Connect] Đã ngắt kết nối.")
+            self.generalUI.gui_log_update(LogUIEntity(LogUIType.WARNING, "[Connect] Đã ngắt kết nối.", ""))
             return
 
         # Not connected -> attempt connect
@@ -183,19 +191,19 @@ class MonitoringUI:
             baud = 9600
 
         if not port:
-            self.info.append("[Connect] Vui lòng chọn cổng COM.")
+            self.generalUI.gui_log_update(LogUIEntity(LogUIType.WARNING, "[Connect] Vui lòng chọn cổng COM.", ""))
             return
 
         # Run on background thread
         self.connect_button.setEnabled(False)
-        self.info.append(f"[Connect] Đang kết nối {port} @ {baud}...")
+        self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, f"[Connect] Đang kết nối {port} @ {baud}...", ""))
         thread = threading.Thread(target=self._connect_async, args=(port, baud), daemon=True)
         thread.start()
     
     def _connect_async(self, port, baud):
         """Kết nối trên background thread"""
         try:
-            success = self.arduino_io_service.connect(port, baudrate=baud)
+            success = self.generalUI.arduino_io_service.connect(port, baudrate=baud)
         except Exception as e:
             print(f"[Connect] Error: {e}")
             success = False
@@ -205,9 +213,9 @@ class MonitoringUI:
         self.state_connected = success
         if success:
             self._set_connected_state(True)
-            self.info.append(f"[Connect] ✓ Đã kết nối {port} @ {baud}.")
+            self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, f"[Connect] ✓ Đã kết nối {port} @ {baud}.", ""))
         else:
-            self.info.append(f"[Connect] ✗ Kết nối thất bại - kiểm tra port hoặc Arduino.")
+            self.generalUI.gui_log_update(LogUIEntity(LogUIType.WARNING, f"[Connect] ✗ Kết nối thất bại - kiểm tra port hoặc Arduino.", ""))
 
     def _set_connected_state(self, connected: bool):
         # Update button text and enable/disable comboboxes

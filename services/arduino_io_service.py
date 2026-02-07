@@ -56,6 +56,10 @@ class ArduinoIOService:
     def set_manual_outputs(self, heater_pct: int, fan_pct: int):
         self.conn.send(self.proto.cmd_manual_outputs(heater_pct, fan_pct))
 
+    def set_buzzer(self, state: bool):
+        """Control buzzer/alarm: True=ON, False=OFF"""
+        self.conn.send(self.proto.cmd_buzzer(state))
+
     # ---------- Receive handler ----------
     def _handle_line(self, line: str):
         # Parse telemetry

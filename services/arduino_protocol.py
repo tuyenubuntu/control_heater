@@ -51,6 +51,11 @@ class ArduinoProtocol:
         fan_pct = max(0, min(100, int(fan_pct)))
         return f"MAN,H={heater_pct},F={fan_pct}"
 
+    @staticmethod
+    def cmd_buzzer(state: bool) -> str:
+        """Control buzzer/alarm: True=ON, False=OFF"""
+        return f"BUZZER={'ON' if state else 'OFF'}"
+
     # ---------- Decode telemetry (Arduino -> PC) ----------
     @staticmethod
     def parse_telemetry(line: str) -> Telemetry | None:

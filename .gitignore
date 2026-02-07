@@ -8,3 +8,7 @@ venv/
 ENV/
 services/__pycache__/
 ui/__pycache__/
+build/
+dist/
+app.spec
+*.zip

@@ -3,15 +3,19 @@ import sys
 from typing import Optional, Set
 import platform
 from pathlib import Path
-from PySide6.QtWidgets import QApplication, QPushButton, QTabWidget, QWidget, QTableWidget, QTableWidgetItem, QLabel, QMessageBox ,  QDialog, QVBoxLayout
+from PySide6.QtWidgets import QApplication, QPushButton, QTabWidget, QWidget, QTextEdit, QTableWidget, QTableWidgetItem, QLabel, QMessageBox ,  QDialog, QVBoxLayout
 from PySide6.QtGui import QIcon
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, Qt, QFileSystemWatcher, QObject, Signal,QTimer
 from services.security_service import SecurityService
+from services.connection_service import ConnectionService
+from services.arduino_io_service import ArduinoIOService
 from ui.monitoring_ui import MonitoringUI
 from ui.control_ui import ControlUI
 from ui.setting_ui import SettingUI
 from ui.accountmanager_ui import AccountManagerUI
+from entities.log_ui_entity import LogUIEntity
+from infrastructure.log_ui_type import LogUIType
 
 class GuiUpdater(QObject):
     # update_gui_log_signal        = Signal(object)  # window, broadcast
@@ -45,6 +49,9 @@ class GeneralUI:
         if window_title:
             self.set_window_title(window_title)
 
+        self.connection_service = ConnectionService()
+        self.arduino_io_service = ArduinoIOService(self.connection_service)
+
         # self.user_watcher.fileChanged.connect(self.setting_service.from_json_file)
         # --- Init Security service (users.json auto-reload) ---
         self.security = SecurityService("configs/security/users.json")
@@ -75,6 +82,7 @@ class GeneralUI:
         self.tab_control        = self.window.findChild(QWidget, "control_tab")
         self.save_config        = self.window.findChild(QPushButton, "saveBtn")
         self.apply_btn          = self.window.findChild(QPushButton, "applyBtn")
+        self.info               = self.window.findChild(QTextEdit, "info_edit")
 
 
         self.end_button.clicked.connect(QApplication.instance().quit)
@@ -107,14 +115,14 @@ class GeneralUI:
         """Lazy init + monitorTab lifecycle management (polling/reset)."""
 
         if idx == self.idx_control and self._control_ui is None:
-            self._control_ui = ControlUI(self.window)
+            self._control_ui = ControlUI(self.window, self)
             self._setting_ui = SettingUI(self.window)
         self._prev_tab_idx = idx
     
     def _maybe_preinit_on_click(self, idx: int):
         """Optional: pre-init when clicking a tab before currentChanged is emitted."""
         if idx == self.idx_control and self._control_ui is None:
-            self._manual_ui = ControlUI(self.window)
+            self._manual_ui = ControlUI(self.window, self)
             self._inited.add(idx)
         if idx == self.idx_setting and self._setting_ui is None:
             self._setting_ui = SettingUI(self.window)
@@ -148,6 +156,11 @@ class GeneralUI:
     def _enabled_tab(self, enabled):
         for idx in (self.idx_control, self.idx_setting):
             self.tab.setTabEnabled(idx, enabled and self.enable_role)
+
+    def gui_log_update(self, broadcast: LogUIEntity):
+        """General GUI log update function."""
+        log_text = f"[{broadcast.type['icon']}] {broadcast.timestamp} {broadcast.description} {broadcast.parameter}\n"
+        self.info.append(log_text)
     
 
     def show_info_dialog(self):

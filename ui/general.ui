@@ -30,7 +30,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="monitoring_tab">
      <attribute name="title">
@@ -710,7 +710,7 @@ qproperty-alignment: AlignCenter;
         <string>Heater:</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="force_DO_0Btn">
+      <widget class="QPushButton" name="force_fan_Btn">
        <property name="geometry">
         <rect>
          <x>100</x>
@@ -723,7 +723,7 @@ qproperty-alignment: AlignCenter;
         <string>Set</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="force_DO_0Btn_2">
+      <widget class="QPushButton" name="force_heater_Btn">
        <property name="geometry">
         <rect>
          <x>100</x>
@@ -755,7 +755,7 @@ qproperty-alignment: AlignCenter;
         <string>Mode:</string>
        </property>
       </widget>
-      <widget class="QComboBox" name="jobBox_3">
+      <widget class="QComboBox" name="mode_box">
        <property name="geometry">
         <rect>
          <x>100</x>
@@ -778,7 +778,7 @@ qproperty-alignment: AlignCenter;
         </property>
        </item>
       </widget>
-      <widget class="QPushButton" name="force_DO_0Btn_3">
+      <widget class="QPushButton" name="force_alarm_Btn">
        <property name="geometry">
         <rect>
          <x>100</x>

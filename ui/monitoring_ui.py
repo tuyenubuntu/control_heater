@@ -1,6 +1,6 @@
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QObject, Signal, QTimer
 from PySide6.QtGui import QPixmap, QImage, QColor
-from PySide6.QtWidgets import QComboBox, QTextEdit, QPushButton, QLabel, QTableWidget, QTableWidgetItem, QApplication, QWidget
+from PySide6.QtWidgets import QComboBox, QTextEdit, QPushButton, QLabel, QTableWidget, QTableWidgetItem, QApplication, QWidget, QProgressBar
 import time
 import threading
 from entities.log_ui_entity import LogUIEntity
@@ -19,6 +19,8 @@ class MonitoringUI:
 
         self.state_connected = None
         self.pv_prev = None  # For trend calculation
+        self.telemetry_counter = 0  # Counter to throttle UI updates
+        self.last_heater_value = None  # Cache last heater value
 
         # Available ports/baudrates
         self.ports = self.generalUI.arduino_io_service.list_ports()
@@ -37,7 +39,7 @@ class MonitoringUI:
                 self.baudrate.setEnabled(True)
         
         # Setup histogram
-        self.histogram = HistogramUI(parent_widget=self.histogram_1, max_samples=500)
+        self.histogram = HistogramUI(parent_widget=self.histogram_1, max_samples=10000)
         
         # Setup telemetry callback
         self.generalUI.arduino_io_service.on_telemetry = self.on_telemetry_received
@@ -68,6 +70,7 @@ class MonitoringUI:
         self.connect_button = self.window.findChild(QPushButton, "connectBtn")
         self.refresh_button = self.window.findChild(QPushButton, "refreshBtn")
         self.histogram_1 = self.window.findChild(QWidget, "histogram_1")
+        self.progressBar_heater = self.window.findChild(QProgressBar, "progressBar_heater")
         
         self.start_button.clicked.connect(self.start)
         self.stop_button.clicked.connect(self.stop)
@@ -121,15 +124,29 @@ class MonitoringUI:
             if self.heater and telemetry.heater is not None:
                 self.heater.setText(f"{telemetry.heater}%")
             
+            # Throttle updates: cập nhật UI mỗi 10 samples
+            self.telemetry_counter += 1
+            
             # Cập nhật histogram
             if telemetry.pv is not None:
                 self.histogram.add_pv_sample(telemetry.pv)
             if telemetry.sp is not None:
                 self.histogram.set_setpoint(telemetry.sp)
             
-            # Cập nhật vẽ histogram mỗi 50 samples
-            if len(self.histogram.pv_samples) % 50 == 0:
+            # Cập nhật UI (progress bar + histogram) chỉ mỗi 10 samples để tránh recursive repaint
+            if self.telemetry_counter % 10 == 0:
+                # Update histogram
                 self.histogram.update_histogram()
+                
+                # Update progress bar
+                if self.progressBar_heater and telemetry.heater is not None:
+                    try:
+                        heater_int = int(float(telemetry.heater))
+                        if self.last_heater_value != heater_int:
+                            self.progressBar_heater.setValue(heater_int)
+                            self.last_heater_value = heater_int
+                    except (ValueError, TypeError):
+                        pass
             
             # Tính trend: so sánh pv hiện tại với pv trước đó
             if self.trend and telemetry.pv is not None:
@@ -145,8 +162,13 @@ class MonitoringUI:
                 self.pv_prev = telemetry.pv
         except Exception as e:
             # UI widget đã bị xóa hoặc lỗi khác
-            self.generalUI.gui_log_update(LogUIEntity(LogUIType.ERROR, f"[Telemetry] Error updating telemetry: {e}", ""))
-            pass
+            import traceback
+            error_msg = f"[Telemetry] Error: {str(e)}\n{traceback.format_exc()}"
+            print(error_msg)
+            try:
+                self.generalUI.gui_log_update(LogUIEntity(LogUIType.ERROR, f"[Telemetry] Error updating telemetry: {e}", ""))
+            except:
+                pass
 
     def update_com_ports(self):
         if self.com is None:

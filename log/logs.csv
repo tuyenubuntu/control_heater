@@ -68,3 +68,254 @@ timestamp,level,source,message,details
 2026-04-19 14:50:49,INFO,GUI,Closed application,Closed application: finished
 2026-04-19 15:24:27,INFO,GUI,Closed application,Closed application: finished
 2026-04-19 15:25:31,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 15:27:15,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 15:28:05,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 15:28:13,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 15:28:13,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:28:19,INFO,GUI,[Connect] Connecting to COM4 @ 9600...,
+2026-04-19 15:28:24,ERROR,ConnectionService,Connect failed,"could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)"
+2026-04-19 15:28:24,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:28:32,INFO,GUI,[Connect] Connecting to COM5 @ 9600...,
+2026-04-19 15:28:36,ERROR,ConnectionService,Connect failed,Write timeout
+2026-04-19 15:28:36,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:28:44,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 15:28:53,INFO,GUI,[Connect] Connecting to COM5 @ 9600...,
+2026-04-19 15:28:53,ERROR,ConnectionService,Connect failed,"could not open port 'COM5': PermissionError(13, 'Access is denied.', None, 5)"
+2026-04-19 15:28:53,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:29:07,INFO,GUI,[Connect] Connecting to COM5 @ 19200...,
+2026-04-19 15:29:07,ERROR,ConnectionService,Connect failed,"could not open port 'COM5': PermissionError(13, 'Access is denied.', None, 5)"
+2026-04-19 15:29:07,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:29:18,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 15:29:22,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 15:29:22,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:29:27,INFO,GUI,[Connect] Connecting to COM4 @ 9600...,
+2026-04-19 15:29:32,ERROR,ConnectionService,Connect failed,"could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)"
+2026-04-19 15:29:32,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:29:53,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 15:34:07,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 15:34:13,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 15:34:13,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:34:17,INFO,GUI,[Connect] Connecting to COM4 @ 9600...,
+2026-04-19 15:34:22,ERROR,ConnectionService,Connect failed,"could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)"
+2026-04-19 15:34:22,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:34:27,INFO,GUI,[Connect] Connecting to COM5 @ 9600...,
+2026-04-19 15:34:30,ERROR,ConnectionService,Connect failed,Write timeout
+2026-04-19 15:34:30,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:35:06,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 15:35:10,INFO,GUI,[Connect] Connecting to COM1 @ 115200...,
+2026-04-19 15:35:14,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 15:35:14,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:37:45,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 15:37:45,ERROR,ConnectionService,Connect failed,"could not open port 'COM1': PermissionError(13, 'Access is denied.', None, 5)"
+2026-04-19 15:37:45,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:37:50,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 15:37:50,ERROR,ConnectionService,Connect failed,"could not open port 'COM1': PermissionError(13, 'Access is denied.', None, 5)"
+2026-04-19 15:37:50,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:38:59,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 15:38:59,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 15:38:59,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 15:38:59,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 15:39:02,INFO,GUI,[Connect] Connecting to COM5 @ 9600...,
+2026-04-19 15:39:05,ERROR,ConnectionService,Connect failed,Write timeout
+2026-04-19 15:39:05,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:39:14,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 15:39:24,ERROR,ConnectionService,Connect failed,Write timeout
+2026-04-19 15:41:34,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 15:41:35,ERROR,ConnectionService,Connect failed,"could not open port 'COM1': PermissionError(13, 'Access is denied.', None, 5)"
+2026-04-19 15:41:35,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:43:31,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 15:43:37,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 15:43:37,ERROR,ConnectionService,Connect failed,"could not open port 'COM3': PermissionError(13, 'Access is denied.', None, 5)"
+2026-04-19 15:43:37,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:43:42,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 15:43:46,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 15:43:46,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:43:50,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 15:44:22,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 15:45:30,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 15:46:05,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 15:47:24,ERROR,ConnectionService,Connect failed,"could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)"
+2026-04-19 15:48:43,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 15:48:59,ERROR,ConnectionService,Connect failed,Write timeout
+2026-04-19 15:49:14,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 15:49:36,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 15:49:45,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 15:49:45,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 15:49:48,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 15:52:19,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 15:52:33,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 15:55:58,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 15:55:58,ERROR,ConnectionService,Connect failed,"could not open port 'COM3': PermissionError(13, 'Access is denied.', None, 5)"
+2026-04-19 15:55:58,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:56:02,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 15:56:06,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 15:56:06,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 15:56:08,INFO,GUI,[Connect] Connecting to COM4 @ 9600...,
+2026-04-19 15:56:31,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 15:56:38,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 16:00:42,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 16:00:42,ERROR,ConnectionService,Connect failed,"could not open port 'COM3': PermissionError(13, 'Access is denied.', None, 5)"
+2026-04-19 16:00:42,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 16:00:47,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 16:00:51,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 16:00:51,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 17:28:01,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 17:28:05,WARNING,ConnectionService,No response from Arduino on COM3,
+2026-04-19 17:28:05,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 17:28:43,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 17:36:35,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 17:36:40,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 17:36:40,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 17:36:44,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 17:36:48,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 17:36:48,INFO,ConnectionService,Connected to COM3,
+2026-04-19 17:36:48,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 17:37:27,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 17:37:27,INFO,GUI,[Telemetry] Error updating telemetry: Internal C++ object (PySide6.QtWidgets.QLabel) already deleted.,
+2026-04-19 17:37:27,ERROR,ConnectionService,Read error,Internal C++ object (PySide6.QtWidgets.QTextEdit) already deleted.
+2026-04-19 17:37:27,INFO,ConnectionService,Disconnected,
+2026-04-19 17:40:44,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 17:40:48,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 17:40:48,INFO,ConnectionService,Connected to COM3,
+2026-04-19 17:40:48,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 17:45:12,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 17:45:12,INFO,GUI,[Telemetry] Error updating telemetry: Internal C++ object (PySide6.QtWidgets.QLabel) already deleted.,
+2026-04-19 17:45:12,ERROR,ConnectionService,Read error,Internal C++ object (PySide6.QtWidgets.QTextEdit) already deleted.
+2026-04-19 17:45:12,INFO,ConnectionService,Disconnected,
+2026-04-19 18:36:45,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 18:36:49,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 18:36:49,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 18:36:52,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 18:36:56,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 18:36:56,INFO,ConnectionService,Connected to COM3,
+2026-04-19 18:36:56,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 18:40:01,INFO,ConnectionService,Disconnected,
+2026-04-19 18:40:01,INFO,GUI,[Connect] Disconnected.,
+2026-04-19 18:40:04,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 18:40:08,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 18:40:08,INFO,ConnectionService,Connected to COM3,
+2026-04-19 18:40:08,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 18:41:07,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 18:41:07,INFO,GUI,[Telemetry] Error updating telemetry: Internal C++ object (FigureCanvasQTAgg) already deleted.,
+2026-04-19 18:41:30,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 18:41:34,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 18:41:34,INFO,ConnectionService,Connected to COM3,
+2026-04-19 18:41:34,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 18:43:15,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 18:43:15,INFO,GUI,[Telemetry] Error updating telemetry: Internal C++ object (PySide6.QtWidgets.QLabel) already deleted.,
+2026-04-19 18:43:15,INFO,GUI,[Telemetry] Error updating telemetry: Internal C++ object (PySide6.QtWidgets.QLabel) already deleted.,
+2026-04-19 18:43:15,ERROR,ConnectionService,Read error,Internal C++ object (PySide6.QtWidgets.QTextEdit) already deleted.
+2026-04-19 18:43:15,INFO,ConnectionService,Disconnected,
+2026-04-19 22:26:48,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 22:26:55,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 22:26:55,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:26:59,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:26:59,ERROR,ConnectionService,Connect failed,"Cannot configure port, something went wrong. Original message: PermissionError(13, 'A device attached to the system is not functioning.', None, 31)"
+2026-04-19 22:26:59,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:27:08,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:27:13,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 22:27:17,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 22:27:17,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:27:32,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:27:32,ERROR,ConnectionService,Connect failed,"Cannot configure port, something went wrong. Original message: PermissionError(13, 'A device attached to the system is not functioning.', None, 31)"
+2026-04-19 22:27:32,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:27:33,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:27:33,ERROR,ConnectionService,Connect failed,"Cannot configure port, something went wrong. Original message: PermissionError(13, 'A device attached to the system is not functioning.', None, 31)"
+2026-04-19 22:27:33,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:28:55,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:28:56,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:28:56,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:28:56,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:28:56,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:28:58,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:29:02,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:29:02,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:29:02,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:29:02,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:29:06,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 22:29:10,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 22:29:10,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:29:16,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:29:19,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 22:29:25,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:29:27,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 22:29:31,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 22:29:31,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:30:01,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:30:04,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:30:04,ERROR,ConnectionService,Connect failed,"could not open port 'COM3': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)"
+2026-04-19 22:30:04,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:30:40,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 22:39:37,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:39:41,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 22:39:41,INFO,ConnectionService,Connected to COM3,
+2026-04-19 22:39:41,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 22:40:39,INFO,ConnectionService,Disconnected,
+2026-04-19 22:40:39,INFO,GUI,[Connect] Disconnected.,
+2026-04-19 22:40:40,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:40:44,WARNING,ConnectionService,No response from Arduino on COM3,
+2026-04-19 22:40:44,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:41:08,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:41:12,WARNING,ConnectionService,No response from Arduino on COM3,
+2026-04-19 22:41:12,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:41:31,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:41:34,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:41:38,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 22:41:38,INFO,ConnectionService,Connected to COM3,
+2026-04-19 22:41:38,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 22:42:52,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 22:43:05,INFO,ConnectionService,Disconnected,
+2026-04-19 22:43:05,INFO,GUI,[Connect] Disconnected.,
+2026-04-19 22:43:10,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:43:14,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 22:43:14,INFO,ConnectionService,Connected to COM3,
+2026-04-19 22:43:14,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 22:48:05,INFO,ConnectionService,Disconnected,
+2026-04-19 22:48:05,INFO,GUI,[Connect] Disconnected.,
+2026-04-19 22:48:30,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 22:48:40,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:48:44,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 22:48:44,INFO,ConnectionService,Connected to COM3,
+2026-04-19 22:48:44,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 22:49:18,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 22:49:22,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 22:49:22,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:49:23,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:49:26,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 22:49:26,INFO,ConnectionService,Connected to COM3,
+2026-04-19 22:49:26,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 22:52:37,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:52:41,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 22:52:41,INFO,ConnectionService,Connected to COM3,
+2026-04-19 22:52:41,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 22:53:56,INFO,GUI,[Connect] Connecting to COM1 @ 9600...,
+2026-04-19 22:54:01,WARNING,ConnectionService,No response from Arduino on COM1,
+2026-04-19 22:54:01,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 22:54:02,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:54:06,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 22:54:06,INFO,ConnectionService,Connected to COM3,
+2026-04-19 22:54:06,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 22:56:03,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:56:07,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 22:56:07,INFO,ConnectionService,Connected to COM3,
+2026-04-19 22:56:07,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 22:58:21,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:58:25,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 22:58:25,INFO,ConnectionService,Connected to COM3,
+2026-04-19 22:58:25,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 22:59:48,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 22:59:52,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 22:59:52,INFO,ConnectionService,Connected to COM3,
+2026-04-19 22:59:52,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 23:00:57,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 23:01:01,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 23:01:01,INFO,ConnectionService,Connected to COM3,
+2026-04-19 23:01:01,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 23:09:18,INFO,ConnectionService,Disconnected,
+2026-04-19 23:09:18,INFO,GUI,[Connect] Disconnected.,
+2026-04-19 23:09:19,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 23:09:36,INFO,GUI,[Connect] Connecting to COM3 @ 9600...,
+2026-04-19 23:09:40,INFO,ConnectionService,Handshake OK,"PV=0.00,SP=42.00,ERR=42.00,H=0,F=0,MODE=AUTO,ALARM=NONE"
+2026-04-19 23:09:40,INFO,ConnectionService,Connected to COM3,
+2026-04-19 23:09:40,INFO,GUI,[Connect] ✓ Connected to COM3 @ 9600.,
+2026-04-19 23:10:01,INFO,GUI,Closed application,Closed application: finished

@@ -10,5 +10,6 @@ services/__pycache__/
 ui/__pycache__/
 build/
 dist/
+log/
 app.spec
 *.zip

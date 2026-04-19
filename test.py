@@ -32,7 +32,7 @@ def main():
     arduino.on_telemetry = on_telemetry
 
     # 3. Kết nối (đổi index nếu cần)
-    ok = arduino.connect(ports[2], baudrate=9600)
+    ok = arduino.connect(ports[0], baudrate=9600)
     print("Connected:", ok)
     if not ok:
         return

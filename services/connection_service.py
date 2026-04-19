@@ -4,6 +4,7 @@ import serial
 import serial.tools.list_ports
 import threading
 import time
+from services.Logging_service import LoggingService
 
 
 class ConnectionService:
@@ -16,6 +17,7 @@ class ConnectionService:
         self.port = None
         self.baudrate = 115200
         self.is_connected = False
+        self.logger = LoggingService("log/logs.csv")
 
         self._read_thread = None
         self._stop_event = threading.Event()
@@ -44,7 +46,11 @@ class ConnectionService:
         # Kiểm tra port có tồn tại không
         available_ports = self.list_ports()
         if port not in available_ports:
-            print(f"[ConnectionService] ✗ Port {port} không tồn tại. Available: {available_ports}")
+            self.logger.warning(
+                "ConnectionService",
+                f"Port {port} not found. Connection failed.",
+                f"Available: {available_ports}",
+            )
             return False
 
         try:
@@ -78,23 +84,37 @@ class ConnectionService:
                     # Kiểm tra xem có phải telemetry response không (chứa "PV=" và "SP=")
                     if "PV=" in line and "SP=" in line:
                         response_received = True
-                        print(f"[ConnectionService] ✓ Handshake OK: {line}")
+                        self.logger.info(
+                            "ConnectionService",
+                            "Handshake OK",
+                            line,
+                        )
                         break
                 time.sleep(0.05)
             
             if not response_received:
                 self.ser.close()
                 self.is_connected = False
-                print(f"[ConnectionService] ✗ No response from Arduino on {port}")
+                self.logger.warning(
+                    "ConnectionService",
+                    f"No response from Arduino on {port}",
+                )
                 return False
             
             self.is_connected = True
             self._start_reading()
-            print(f"[ConnectionService] Connected to {port}")
+            self.logger.info(
+                "ConnectionService",
+                f"Connected to {port}",
+            )
             return True
 
         except Exception as e:
-            print(f"[ConnectionService] Connect failed: {e}")
+            self.logger.error(
+                "ConnectionService",
+                "Connect failed",
+                str(e),
+            )
             self.is_connected = False
             return False
 
@@ -112,7 +132,7 @@ class ConnectionService:
 
         self.is_connected = False
         self.ser = None
-        print("[ConnectionService] Disconnected")
+        self.logger.info("ConnectionService", "Disconnected")
 
     # -----------------------------
     # SEND / RECEIVE
@@ -130,7 +150,7 @@ class ConnectionService:
         try:
             self.ser.write(message.encode())
         except Exception as e:
-            print(f"[ConnectionService] Send error: {e}")
+            self.logger.error("ConnectionService", "Send error", str(e))
 
     def _start_reading(self):
         self._stop_event.clear()
@@ -153,9 +173,9 @@ class ConnectionService:
                         if self.on_data_received:
                             self.on_data_received(line)
                         else:
-                            print(f"[Arduino] {line}")
+                            self.logger.info("Arduino", line)
             except Exception as e:
-                print(f"[ConnectionService] Read error: {e}")
+                self.logger.error("ConnectionService", "Read error", str(e))
                 break
 
             time.sleep(0.01)

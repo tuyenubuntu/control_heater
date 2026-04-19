@@ -3,12 +3,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Tuple, Type, TypeVar, Callable
+from services.Logging_service import LoggingService
 from shiboken6 import isValid  
 from PySide6.QtCore import QFile, Qt
 from PySide6.QtWidgets import QWidget, QDialog, QPushButton, QLineEdit, QTextEdit, QComboBox,QMessageBox, QTabWidget, QCheckBox, QButtonGroup
 from PySide6.QtUiTools import QUiLoader
-# from infrastructure.log_ui_type import LogUIType
-# from entities.log_ui_entity import LogUIEntity
+from infrastructure.log_ui_type import LogUIType
+from entities.log_ui_entity import LogUIEntity
 
 T = TypeVar("T", bound=QWidget)
 
@@ -31,11 +32,12 @@ class AccountManagerUI:
       - Permission/Manager tab signals are wired safely and rebind applyBtn per tab.
     """
     # ---------- init ----------
-    def __init__(self, parent_window, loader: QUiLoader, security_service, generalUI, cfg: Optional[AccountManagerConfig] = None):
+    def __init__(self, parent_window, loader: QUiLoader, security_service, generalUI, cfg: Optional[AccountManagerConfig] = None, logger: Optional[Type[LoggingService]] = None):
         self.parent_window = parent_window
         self.loader = loader
         self.security = security_service
         self.generalUI =  generalUI
+        self.logger = logger
         # self.gui_updater = gui_updaters
         self.cfg = cfg or AccountManagerConfig()
 
@@ -70,6 +72,8 @@ class AccountManagerUI:
         dlg = self._load_dialog(self.cfg.login_ui_path)
         if not dlg:
             # self.generalUI.gui_log_update(LogUIEntity(LogUIType.ERROR, "Open account management window", "Failed."))
+            if self.logger:
+                self.logger.log(LogUIEntity(LogUIType.ERROR, "Open account management window", "Failed."))
             QMessageBox.critical(self.parent_window, "Login", "Cannot load login UI.")
             return
 
@@ -94,6 +98,7 @@ class AccountManagerUI:
             password = pass_edit.text()
             if self.security.verify(user, password):
                 # self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, f"Login in to user: {user}", "Sucessfully."))
+                self.logger.info("AccountManagerUI", f"Login in to user: {user} - Successfully.")
                 role = (self.security.get_role(user) or "operator").lower()
                 if hasattr(self.generalUI, "_apply_tab_permission"):
                     self.generalUI._apply_tab_permission(role, user)
@@ -103,6 +108,7 @@ class AccountManagerUI:
                     self._init_permission_tab(refresh=True)
             else:
                 # self.generalUI.gui_log_update(LogUIEntity(LogUIType.WARNING, f"Login in to user: {user}", "Failed, wrong account or password!"))
+                self.logger.warning("AccountManagerUI", f"Login in to user: {user} - Failed, wrong account or password!")
                 QMessageBox.critical(dlg, "Login failed", "Wrong account or password!")
                 if hasattr(status_lbl, "setText"):
                     try: status_lbl.setText("Wrong account or password!")
@@ -117,6 +123,8 @@ class AccountManagerUI:
         dlg = self._load_dialog(self.cfg.login_ui_path)
         if not dlg:
             # self.generalUI.gui_log_update(LogUIEntity(LogUIType.ERROR, "Open login window", "Failed."))
+            if self.logger:
+                self.logger.log(LogUIEntity(LogUIType.ERROR, "Open login window", "Failed."))
             QMessageBox.critical(self.parent_window, "Login", "Cannot load login UI.")
             return
 
@@ -127,9 +135,12 @@ class AccountManagerUI:
             if self.security.verify("administrator", pass_edit.text()):
                 # self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, "Login in to user: administrator", "Sucessfully."))
                 # self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, "Open Account Management", "Sucessfully."))
+                self.logger.info("AccountManagerUI", "Login in to user: administrator - Successfully.")
+                self.logger.info("AccountManagerUI", "Open Account Management - Successfully.")
                 dlg.accept()
             else:
                 # self.generalUI.gui_log_update(LogUIEntity(LogUIType.WARNING, "Login in to user: administrator", "Failed, wrong password for 'administrator'."))
+                self.logger.warning("AccountManagerUI", "Login in to user: administrator - Failed, wrong password for 'administrator'.")
                 QMessageBox.critical(dlg, "Login failed", "Wrong password for 'administrator'.")
                 pass_edit.setFocus(); pass_edit.selectAll()
 
@@ -160,9 +171,13 @@ class AccountManagerUI:
         ok, msg = self.security.create_user(u, p, role="operator", description=d)
         if not ok:
             # self.generalUI.gui_log_update(LogUIEntity(LogUIType.WARNING, f"Create user: {u}", "Failed."))
+            if self.logger:
+                self.logger.log(LogUIEntity(LogUIType.WARNING, f"Create user: {u}", "Failed."))
             QMessageBox.critical(self._admin_dlg, "Error", msg or "Create user failed.")
             return
         # self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, f"Create user: {u}", "Sucessfully, role : operator."))
+        if self.logger:
+            self.logger.log(LogUIEntity(LogUIType.INFO, f"Create user: {u}", "Successfully, role : operator."))
         QMessageBox.information(self._admin_dlg, "Success", msg or f"User '{u}' created.")
         for w in (self._create_user_edit, self._create_pass_edit, self._desc_edit):
             if w:
@@ -191,9 +206,13 @@ class AccountManagerUI:
         ok, msg = self.security.update_role(username, role)
         if not ok:
             # self.generalUI.gui_log_update(LogUIEntity(LogUIType.WARNING, f"Change role user: {username}", f"Failed."))
+            if self.logger:
+                self.logger.log(LogUIEntity(LogUIType.WARNING, f"Change role user: {username}", f"Failed."))
             QMessageBox.critical(self._admin_dlg, "Update role failed", msg or "Could not update user role.")
             return
         # self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, f"Change role user: {username}", f"Sucessfully, updated '{username}' to role '{role}'."))
+        if self.logger:
+            self.logger.log(LogUIEntity(LogUIType.INFO, f"Change role user: {username}", f"Successfully, updated '{username}' to role '{role}'."))
         QMessageBox.information(self._admin_dlg, "Success", msg or f"Updated '{username}' to role '{role}'.")
     
     def manager_user(self):
@@ -239,9 +258,13 @@ class AccountManagerUI:
             if not ok:
                 # self.generalUI.gui_log_update(LogUIEntity(LogUIType.WARNING, f"Delete user: {username}", f"Failed."))
                 QMessageBox.critical(self._admin_dlg, "Delete failed", msg or "Could not delete user.")
+                if self.logger:
+                    self.logger.log(LogUIEntity(LogUIType.WARNING, f"Delete user: {username}", f"Failed."))
                 return
             # self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, f"Delete user: {username}", f"Sucessfully."))
             QMessageBox.information(self._admin_dlg, "Success", msg or f"User '{username}' deleted.")
+            if self.logger:
+                self.logger.log(LogUIEntity(LogUIType.INFO, f"Delete user: {username}", f"Successfully."))
             self._mgr_pass_edit.clear(); self._mgr_new_pass_edit.clear()
             # Refresh lists
             self._init_permission_tab(refresh=True)
@@ -262,9 +285,13 @@ class AccountManagerUI:
             if not ok:
                 # self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, f"Change passwords: {username}", f"Failed."))
                 QMessageBox.critical(self._admin_dlg, "Change password failed", msg or "Could not change password.")
+                if self.logger:
+                    self.logger.log(LogUIEntity(LogUIType.WARNING, f"Change password: {username}", f"Failed."))
                 return
             # self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, f"Change passwords: {username}", f"Sucessfully."))
             QMessageBox.information(self._admin_dlg, "Success", msg or "Password changed successfully.")
+            if self.logger:
+                self.logger.log(LogUIEntity(LogUIType.INFO, f"Change password: {username}", f"Successfully."))
             self._mgr_pass_edit.clear(); self._mgr_new_pass_edit.clear()
             return
 

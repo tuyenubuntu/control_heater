@@ -67,7 +67,9 @@ class ControlUI:
             if button:
                 button.setEnabled(is_manual)
             else:
-                print(f"WARNING: Button not found - {button}")
+                self.generalUI.gui_log_update(
+                    LogUIEntity(LogUIType.WARNING, "[ControlUI] WARNING: Button not found", str(button))
+                )
         
         
     

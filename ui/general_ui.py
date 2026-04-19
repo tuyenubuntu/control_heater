@@ -10,6 +10,7 @@ from PySide6.QtCore import QFile, Qt, QFileSystemWatcher, QObject, Signal,QTimer
 from services.security_service import SecurityService
 from services.connection_service import ConnectionService
 from services.arduino_io_service import ArduinoIOService
+from services.Logging_service import LoggingService
 from ui.monitoring_ui import MonitoringUI
 from ui.control_ui import ControlUI
 from ui.setting_ui import SettingUI
@@ -49,6 +50,7 @@ class GeneralUI:
         if window_title:
             self.set_window_title(window_title)
 
+        self.logger = LoggingService("log/logs.csv")
         self.connection_service = ConnectionService()
         self.arduino_io_service = ArduinoIOService(self.connection_service)
 
@@ -61,7 +63,7 @@ class GeneralUI:
         self.enable_role = False
         
         # --- Account manager backend (used by UI buttons) ---
-        self.account_manager = AccountManagerUI(parent_window=self.window, loader=self.loader, security_service=self.security, generalUI=self)
+        self.account_manager = AccountManagerUI(parent_window=self.window, loader=self.loader, security_service=self.security, generalUI=self, logger=self.logger)
 
         # Child UIs (inspection is initialized at start; others are lazy)
         self._monitor_ui = MonitoringUI(self.window, self)
@@ -159,10 +161,11 @@ class GeneralUI:
 
     def gui_log_update(self, broadcast: LogUIEntity):
         """General GUI log update function."""
+        level = broadcast.type.get("value") if isinstance(broadcast.type, dict) else str(broadcast.type)
+        self.logger.info("GUI", broadcast.description, str(broadcast.parameter))
         log_text = f"[{broadcast.type['icon']}] {broadcast.timestamp} {broadcast.description} {broadcast.parameter}\n"
         self.info.append(log_text)
     
-
     def show_info_dialog(self):
         app_name = "Heater Panel"
         os_version = platform.platform()
@@ -195,15 +198,17 @@ class GeneralUI:
             self.app.setWindowIcon(icon)
             self.window.setWindowIcon(icon)
         except Exception as e:
-            print(f"Failed to set application icon: {e}")
+            self.logger.error("GeneralUI", "Failed to set application icon", str(e))
     
     def set_window_title(self, title):
         """Set the window title."""
         try:
             self.window.setWindowTitle(title)
         except Exception as e:
-            print(f"Failed to set window title: {e}")
+            self.logger.error("GeneralUI", "Failed to set window title", str(e))
 
     def run(self):
         self.window.show()
         self.app.exec()
+        print ("Closed application")
+        self.logger.info("GUI", "Closed application", "Closed application: finished")

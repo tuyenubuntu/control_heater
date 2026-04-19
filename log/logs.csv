@@ -1,0 +1,68 @@
+timestamp,level,source,message,details
+2026-04-19 13:12:24,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:12:24,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:12:25,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:12:25,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:12:25,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:12:25,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:12:25,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:12:26,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:12:26,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:12:26,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:18:51,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:19:02,INFO,GUI,[Connect] Đang kết nối /dev/ttyS31 @ 9600...,
+2026-04-19 13:19:02,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 13:19:02,INFO,GUI,[Connect] ✗ Kết nối thất bại - kiểm tra port hoặc Arduino.,
+2026-04-19 13:22:36,INFO,GUI,[Start] Vui lòng kết nối đến Arduino trước.,
+2026-04-19 13:27:49,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 13:36:06,INFO,GUI,[Start] Please connect to the Arduino first.,
+2026-04-19 13:36:07,INFO,GUI,[Stop] Please connect to the Arduino first.,
+2026-04-19 13:45:05,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 13:45:13,INFO,AccountManagerUI,Login in to user: system - Successfully.,
+2026-04-19 13:46:35,INFO,GUI,[Refresh] Successfully refreshed COM port list.,
+2026-04-19 13:46:37,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 13:46:37,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 13:46:37,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 13:47:03,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 13:47:03,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 13:47:03,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 13:47:54,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 13:48:56,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 13:48:56,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 13:48:56,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 13:54:23,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 13:54:28,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 13:54:28,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 13:54:28,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 13:54:30,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 13:54:30,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 13:54:30,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 13:54:30,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 13:54:30,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 13:54:30,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 13:54:30,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 13:54:30,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 13:54:30,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 13:54:30,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 13:54:30,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 13:54:30,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 13:54:31,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 13:54:31,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 13:54:31,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 13:54:31,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 13:54:31,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 13:54:31,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 13:56:21,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 13:57:04,INFO,GUI,[Start] Please connect to the Arduino first.,
+2026-04-19 13:57:35,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 14:35:41,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 14:36:55,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 14:36:55,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 14:36:55,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 14:37:00,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 14:50:42,INFO,GUI,[Stop] Please connect to the Arduino first.,
+2026-04-19 14:50:44,INFO,GUI,[Start] Please connect to the Arduino first.,
+2026-04-19 14:50:46,INFO,GUI,[Connect] Connecting to /dev/ttyS31 @ 9600...,
+2026-04-19 14:50:46,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
+2026-04-19 14:50:46,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
+2026-04-19 14:50:49,INFO,GUI,Closed application,Closed application: finished

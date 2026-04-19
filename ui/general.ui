@@ -447,7 +447,7 @@
         <rect>
          <x>260</x>
          <y>20</y>
-         <width>471</width>
+         <width>461</width>
          <height>401</height>
         </rect>
        </property>
@@ -660,7 +660,7 @@ border-radius: 10px;   /* = 100 / 2 */</string>
           <rect>
            <x>10</x>
            <y>0</y>
-           <width>451</width>
+           <width>441</width>
            <height>351</height>
           </rect>
          </property>
@@ -692,7 +692,7 @@ border-radius: 10px;   /* = 100 / 2 */</string>
         <x>740</x>
         <y>10</y>
         <width>251</width>
-        <height>411</height>
+        <height>421</height>
        </rect>
       </property>
       <property name="title">

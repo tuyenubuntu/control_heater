@@ -66,3 +66,5 @@ timestamp,level,source,message,details
 2026-04-19 14:50:46,ERROR,ConnectionService,Connect failed,[Errno 13] could not open port /dev/ttyS31: [Errno 13] Permission denied: '/dev/ttyS31'
 2026-04-19 14:50:46,INFO,GUI,[Connect] ✗ Connection failed - please check the port or Arduino.,
 2026-04-19 14:50:49,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 15:24:27,INFO,GUI,Closed application,Closed application: finished
+2026-04-19 15:25:31,INFO,GUI,Closed application,Closed application: finished

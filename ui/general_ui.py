@@ -124,7 +124,7 @@ class GeneralUI:
     def _maybe_preinit_on_click(self, idx: int):
         """Optional: pre-init when clicking a tab before currentChanged is emitted."""
         if idx == self.idx_control and self._control_ui is None:
-            self._manual_ui = ControlUI(self.window, self)
+            self._control_ui = ControlUI(self.window, self)
             self._inited.add(idx)
         if idx == self.idx_setting and self._setting_ui is None:
             self._setting_ui = SettingUI(self.window)

@@ -1,3 +1,4 @@
+import warnings
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtGui import QPixmap, QImage
 from PySide6.QtWidgets import QComboBox, QTextEdit, QPushButton, QLabel, QTableWidget, QTableWidgetItem, QApplication, QWidget
@@ -12,18 +13,40 @@ class ControlUI:
         self.buzzer_state = False  # Track buzzer state
         self.fan_state = False  # Track fan force state
         self.heater_state = False  # Track heater force state
+        self._widgets_bound = False  # Guard flag to prevent multiple bindings
         self._bind_widgets()
 
     
     def _bind_widgets(self):
-        self.mode_box = self.window.findChild(QComboBox, "mode_box")
-        self.force_fan_Btn = self.window.findChild(QPushButton, "force_fan_Btn")
-        self.force_heater_Btn = self.window.findChild(QPushButton, "force_heater_Btn")
-        self.force_alarm_Btn = self.window.findChild(QPushButton, "force_alarm_Btn")
+        # Prevent multiple bindings
+        if self._widgets_bound:
+            return
+        self._widgets_bound = True
+        
+        # First try to find buttons in the control tab directly
+        # Get the control_tab first
+        control_tab = self.window.findChild(QWidget, "control_tab")
+        
+        if control_tab:
+            self.mode_box = control_tab.findChild(QComboBox, "mode_box")
+            self.force_fan_Btn = control_tab.findChild(QPushButton, "force_fan_Btn")
+            self.force_heater_Btn = control_tab.findChild(QPushButton, "force_heater_Btn")
+            self.force_alarm_Btn = control_tab.findChild(QPushButton, "force_alarm_Btn")
+        else:
+            # Fallback to searching in the whole window
+            self.mode_box = self.window.findChild(QComboBox, "mode_box")
+            self.force_fan_Btn = self.window.findChild(QPushButton, "force_fan_Btn")
+            self.force_heater_Btn = self.window.findChild(QPushButton, "force_heater_Btn")
+            self.force_alarm_Btn = self.window.findChild(QPushButton, "force_alarm_Btn")
         
         if self.mode_box:
-            # Disconnect all existing connections
-            self.mode_box.currentTextChanged.disconnect()
+            # Suppress the warning about disconnecting (None) - no connection may exist
+            with warnings.catch_warnings():
+                warnings.filterwarnings("ignore", message=".*Failed to disconnect.*")
+                try:
+                    self.mode_box.currentTextChanged.disconnect()
+                except (RuntimeError, TypeError):
+                    pass
             
             # Block signals during initialization
             self.mode_box.blockSignals(True)
@@ -33,27 +56,29 @@ class ControlUI:
             # Unblock signals
             self.mode_box.blockSignals(False)
             self.mode_box.currentTextChanged.connect(self._on_mode_changed)
-            # Manually call once to initialize button states
-            self._on_mode_changed(self.mode_boxs[0])
+            # Initialize to Manual mode to enable buttons by default
+            self.mode_box.setCurrentText("Manual")
+            self._on_mode_changed("Manual")
         
         # Connect button clicks
         if self.force_fan_Btn:
             self.force_fan_Btn.clicked.connect(self._on_fan_button_clicked)
-            # initialize label
             self.force_fan_Btn.setText("Set")
         if self.force_heater_Btn:
             self.force_heater_Btn.clicked.connect(self._on_heater_button_clicked)
-            # initialize label
             self.force_heater_Btn.setText("Set")
         if self.force_alarm_Btn:
             self.force_alarm_Btn.clicked.connect(self._on_alarm_button_clicked)
-            # initialize label to match Set/Reset style
             self.force_alarm_Btn.setText("Set")
     
     def _on_mode_changed(self, mode: str):
         """Enable/disable buttons based on selected mode"""
         is_manual = mode == "Manual"
         self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO,f"[Mode Change] Chế độ đã thay đổi thành {self.mode_box.currentText()}.",""))
+
+        # Send mode command to Arduino
+        arduino_mode = "MANUAL" if is_manual else "AUTO"
+        self.generalUI.arduino_io_service.set_mode(arduino_mode)
 
         # List of all buttons to control
         buttons = [
@@ -81,8 +106,8 @@ class ControlUI:
         
         # Update button text to show current state
         if self.force_alarm_Btn:
-            self.force_alarm_Btn.setText("Tắt Alarm" if self.buzzer_state else "Bật Alarm")
-            self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, f"[Buzzer Control] {'Bật' if self.buzzer_state else 'Tắt'} buzzer/alarm", ""))
+            self.force_alarm_Btn.setText("Reset" if self.buzzer_state else "Set")
+            self.generalUI.gui_log_update(LogUIEntity(LogUIType.INFO, f"[Buzzer Control] {'On' if self.buzzer_state else 'Off'} buzzer/alarm", ""))
     
     def _on_fan_button_clicked(self):
         """Handle fan button click - toggle Set/Reset"""

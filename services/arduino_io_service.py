@@ -59,6 +59,7 @@ class ArduinoIOService:
     def set_buzzer(self, state: bool):
         """Control buzzer/alarm: True=ON, False=OFF"""
         self.conn.send(self.proto.cmd_buzzer(state))
+        print ("Test done")
 
     # ---------- Receive handler ----------
     def _handle_line(self, line: str):

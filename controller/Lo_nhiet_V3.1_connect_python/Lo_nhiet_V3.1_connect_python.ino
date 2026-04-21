@@ -37,6 +37,7 @@ unsigned long lastTelemetrySend = 0;
 // Remote control flags (mặc định giữ nguyên hành vi cũ)
 bool remote_stop = false;        // STOP từ PC -> tắt output (an toàn)
 bool remote_manual = false;      // MODE=MANUAL -> dùng output manual từ PC
+bool remote_buzzer_on = false;   // BUZZER=ON từ PC -> kêu buzzer
 int manual_heater_pct = 0;       // 0..100
 int manual_fan_pct = 0;          // 0..100
 
@@ -267,7 +268,8 @@ void runControlLogic() {
   // 3.5. REMOTE MANUAL OUTPUT (từ PC) - chỉ khi MODE=MANUAL
   // Vẫn giữ các lớp bảo vệ (emergency/timer_done đã return ở trên)
   if (remote_manual) {
-    digitalWrite(BUZZER_PIN, LOW);
+    if (remote_buzzer_on && buzzer_enabled) digitalWrite(BUZZER_PIN, HIGH);
+    else digitalWrite(BUZZER_PIN, LOW);
 
     int heater_pwm = map(manual_heater_pct, 0, 100, 0, 255);
     int fan_pwm    = map(manual_fan_pct,    0, 100, 0, FAN_MAX_PWM);
@@ -712,6 +714,19 @@ void processCommand(char* line) {
       if (comma == -1) break;
       p1 = comma + 1;
     }
+    return;
+  }
+
+  // ===== BUZZER= =====
+  if (s.startsWith("BUZZER=") || s.startsWith("buzzer=")) {
+    int eq = s.indexOf('=');
+    String bv = s.substring(eq + 1);
+    bv.trim();
+    bv.toUpperCase();
+
+    if (bv == "ON") remote_buzzer_on = true;
+    else if (bv == "OFF") remote_buzzer_on = false;
+
     return;
   }
 
